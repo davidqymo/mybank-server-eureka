@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: eureka-server
+server:
+  port: 2000
+
+eureka:
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
+    use-read-only-response-cache: false
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+
+---
+spring:
+  profiles: master
+eureka:
+  instance:
+    hostname: master
+  client:
+    service-url:
+      defaultZone: http://slaver1:2000/eureka/
+
+---
+spring:
+  profiles: slaver1
+eureka:
+  instance:
+    hostname: slaver1
+  client:
+    service-url:
+      defaultZone: http://master:2000/eureka/
